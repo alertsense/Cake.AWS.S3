@@ -174,42 +174,42 @@ public JunitResult GetJunitResult(string name, string message, string inner, str
 
 
 
-public IList<SlackChatMessageAttachment> GetJunitAttachments(IList<JunitSuite> lstSuite)
-{
-	IList<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
+// public IList<SlackChatMessageAttachment> GetJunitAttachments(IList<JunitSuite> lstSuite)
+// {
+// 	IList<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
 
-	foreach(JunitSuite itmSuite in lstSuite)
-	{
-		foreach(JunitCase itmCase in itmSuite.Cases)
-		{
-			// Errors
-			foreach(JunitResult itmResult in itmCase.Errors)
-			{
-				attachments.Add(new SlackChatMessageAttachment()
-				{
-					Pretext = itmSuite.Name.Trim(),
-					Title = itmResult.Message.Trim(),
-					Text = itmResult.Location.Trim(),
-					Color = "danger"
-				});
-			}
+// 	foreach(JunitSuite itmSuite in lstSuite)
+// 	{
+// 		foreach(JunitCase itmCase in itmSuite.Cases)
+// 		{
+// 			// Errors
+// 			foreach(JunitResult itmResult in itmCase.Errors)
+// 			{
+// 				attachments.Add(new SlackChatMessageAttachment()
+// 				{
+// 					Pretext = itmSuite.Name.Trim(),
+// 					Title = itmResult.Message.Trim(),
+// 					Text = itmResult.Location.Trim(),
+// 					Color = "danger"
+// 				});
+// 			}
 
-			// Warnings
-			foreach(JunitResult itmResult in itmCase.Failures)
-			{
-				attachments.Add(new SlackChatMessageAttachment()
-				{
-					Pretext = itmSuite.Name.Trim(),
-					Title = itmResult.Message.Trim(),
-					Text = itmResult.Location.Trim(),
-					Color = "warning"
-				});
-			}
-		}
-	}
+// 			// Warnings
+// 			foreach(JunitResult itmResult in itmCase.Failures)
+// 			{
+// 				attachments.Add(new SlackChatMessageAttachment()
+// 				{
+// 					Pretext = itmSuite.Name.Trim(),
+// 					Title = itmResult.Message.Trim(),
+// 					Text = itmResult.Location.Trim(),
+// 					Color = "warning"
+// 				});
+// 			}
+// 		}
+// 	}
 
-	return attachments;
-}
+// 	return attachments;
+// }
 
 
 
@@ -262,21 +262,21 @@ public class JunitResult
 // ATTACHMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-public void CombineAttachments(IList<SlackChatMessageAttachment> lstOutput, IList<SlackChatMessageAttachment> lstInput)
-{
-	foreach(SlackChatMessageAttachment itmAttachment in lstInput)
-	{
-		if (lstOutput.Count < 10)
-		{
-			if ((lstOutput.Count > 0) && (lstOutput[lstOutput.Count - 1].Pretext == itmAttachment.Pretext))
-			{
-				itmAttachment.Pretext = "";
-			}
+// public void CombineAttachments(IList<SlackChatMessageAttachment> lstOutput, IList<SlackChatMessageAttachment> lstInput)
+// {
+// 	foreach(SlackChatMessageAttachment itmAttachment in lstInput)
+// 	{
+// 		if (lstOutput.Count < 10)
+// 		{
+// 			if ((lstOutput.Count > 0) && (lstOutput[lstOutput.Count - 1].Pretext == itmAttachment.Pretext))
+// 			{
+// 				itmAttachment.Pretext = "";
+// 			}
 
-			lstOutput.Add(itmAttachment);
-		}
-	}
-}
+// 			lstOutput.Add(itmAttachment);
+// 		}
+// 	}
+// }
 
 public string GetPrefix(string name)
 {
@@ -313,122 +313,122 @@ public string GetPrefix(string name)
 // MS BUILD
 ///////////////////////////////////////////////////////////////////////////////
 
-public IList<SlackChatMessageAttachment> GetMsBuildAttachments(string path, Exception exception)
-{
-	// Get Errors
-	IList<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
+// public IList<SlackChatMessageAttachment> GetMsBuildAttachments(string path, Exception exception)
+// {
+// 	// Get Errors
+// 	IList<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
 
-	string[] lines = FileReadLines(path);
-	IList<string> errors = new List<string>();
+// 	string[] lines = FileReadLines(path);
+// 	IList<string> errors = new List<string>();
 
-	foreach(string line in lines)
-	{
-		bool found = false;
+// 	foreach(string line in lines)
+// 	{
+// 		bool found = false;
 
-		foreach(string name in projectNames)
-		{
-			if (line.StartsWith("  " + name + " -> "))
-			{
-				found = true;
-			}
-		}
+// 		foreach(string name in projectNames)
+// 		{
+// 			if (line.StartsWith("  " + name + " -> "))
+// 			{
+// 				found = true;
+// 			}
+// 		}
 
-		foreach(string name in testNames)
-		{
-			if (line.StartsWith("  " + name + " -> "))
-			{
-				found = true;
-			}
-		}
+// 		foreach(string name in testNames)
+// 		{
+// 			if (line.StartsWith("  " + name + " -> "))
+// 			{
+// 				found = true;
+// 			}
+// 		}
 
-		if (!found)
-		{
-			errors.Add(line);
-		}
-	}
+// 		if (!found)
+// 		{
+// 			errors.Add(line);
+// 		}
+// 	}
 
 
 
-	// Get Attachments
-	if (errors.Count > 0)
-	{
-		foreach(string error in errors)
-		{
-			int start = error.LastIndexOf("[");
+// 	// Get Attachments
+// 	if (errors.Count > 0)
+// 	{
+// 		foreach(string error in errors)
+// 		{
+// 			int start = error.LastIndexOf("[");
 
-			string name = "";
-			string file = "";
-			string source = "";
-			string location = "";
+// 			string name = "";
+// 			string file = "";
+// 			string source = "";
+// 			string location = "";
 
-			if (start > 0)
-			{
-				// Get Name
-				name = error.Substring(start + 1, error.Length - (start + 2));
-				string prefix = GetPrefix(name);
+// 			if (start > 0)
+// 			{
+// 				// Get Name
+// 				name = error.Substring(start + 1, error.Length - (start + 2));
+// 				string prefix = GetPrefix(name);
 
-				if (!String.IsNullOrEmpty(prefix))
-				{
-					name = name.Replace(prefix, "");
-				}
+// 				if (!String.IsNullOrEmpty(prefix))
+// 				{
+// 					name = name.Replace(prefix, "");
+// 				}
 
-				name = name.Replace(@"\", "/").Replace(".csproj", "");
+// 				name = name.Replace(@"\", "/").Replace(".csproj", "");
 
-				source = error.Substring(0, start);
-				int seperator = source.IndexOf(":");
+// 				source = error.Substring(0, start);
+// 				int seperator = source.IndexOf(":");
 
-				if (seperator > 0)
-				{
-					// Location
-					file = source.Substring(0, seperator);
-					start = file.LastIndexOf("(");
+// 				if (seperator > 0)
+// 				{
+// 					// Location
+// 					file = source.Substring(0, seperator);
+// 					start = file.LastIndexOf("(");
 					
-					if (start > 0)
-					{
-						location = file.Substring(start, file.Length - start);
-						location = location.Replace(",", ", ");
+// 					if (start > 0)
+// 					{
+// 						location = file.Substring(start, file.Length - start);
+// 						location = location.Replace(",", ", ");
 
-						file = file.Substring(0, start);
-					}
-
-
-
-					// Source
-					source = source.Substring(seperator, source.Length - seperator);
-
-					if (source.StartsWith(": "))
-					{
-						source = source.Substring(2, source.Length - 2);
-					}
-				}
-			}
+// 						file = file.Substring(0, start);
+// 					}
 
 
 
-			//Warning("PRETEXT === " + name + "/" + file);
-			//Warning("TITLE === " + source);
-			//Warning("TEXT === " + location);
+// 					// Source
+// 					source = source.Substring(seperator, source.Length - seperator);
 
-			// Add Attachment
-			attachments.Add(new SlackChatMessageAttachment()
-			{
-				Pretext = name.Trim() + "/" + file.Trim(),
-				Title = source.Trim(),
-				Text = location.Trim(),
-				Color = "danger"
-			});
-		}
-	}
-	else
-	{
-		// General Error
-		attachments.Add(new SlackChatMessageAttachment()
-		{
-			Pretext = "An exception occured while trying to run MSBuild",
-			Text = exception.Message,
-			Color = "danger"
-		});
-	}
+// 					if (source.StartsWith(": "))
+// 					{
+// 						source = source.Substring(2, source.Length - 2);
+// 					}
+// 				}
+// 			}
 
-	return attachments;
-}
+
+
+// 			//Warning("PRETEXT === " + name + "/" + file);
+// 			//Warning("TITLE === " + source);
+// 			//Warning("TEXT === " + location);
+
+// 			// Add Attachment
+// 			attachments.Add(new SlackChatMessageAttachment()
+// 			{
+// 				Pretext = name.Trim() + "/" + file.Trim(),
+// 				Title = source.Trim(),
+// 				Text = location.Trim(),
+// 				Color = "danger"
+// 			});
+// 		}
+// 	}
+// 	else
+// 	{
+// 		// General Error
+// 		attachments.Add(new SlackChatMessageAttachment()
+// 		{
+// 			Pretext = "An exception occured while trying to run MSBuild",
+// 			Text = exception.Message,
+// 			Color = "danger"
+// 		});
+// 	}
+
+// 	return attachments;
+// }

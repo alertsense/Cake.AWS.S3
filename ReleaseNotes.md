@@ -1,3 +1,6 @@
+### New in 0.6.6-alertsense (Released 2021/03/05)
+* [Improvement] Added support for AWS role switch 
+
 ### New in 0.6.6 (Released 2018/09/22)
 * [Improvement] Added Accelerate property to S3Settings
 

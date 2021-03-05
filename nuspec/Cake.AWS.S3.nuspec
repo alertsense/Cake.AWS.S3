@@ -20,6 +20,7 @@
             <dependency id="Cake.Core" version="0.29.0" />
             <dependency id="AWSSDK.Core" version="3.3.17.9" />
             <dependency id="AWSSDK.S3" version="3.3.11" />
+            <dependency id="AWSSDK.SecurityToken" version="3.5.1.56" />
             <dependency id="MimeTypesMap" version="1.0.2" />
         </dependencies>
     </metadata>
@@ -27,6 +28,7 @@
     <files>
         <file src="net46/AWSSDK.Core.dll" target="lib/net46" />
         <file src="net46/AWSSDK.S3.dll" target="lib/net46" />
+        <file src="net46/AWSSDK.SecurityToken.dll" target="lib/net46" />
         <file src="net46/MimeTypesMap.dll" target="lib/net46" />
 
         <file src="net46/Cake.AWS.S3.dll" target="lib/net46" />

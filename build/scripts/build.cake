@@ -76,60 +76,60 @@ Task("Build")
 		NoRestore = true,
 		MSBuildSettings = buildSettings
     });
-})
-.OnError(exception =>
-{
-	List<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
-
-
-
-	// Get MsBuild Errors
-	var path = loggerResultsDir + "/build.txt";
-
-	if (FileExists(path))
-	{
-		IList<SlackChatMessageAttachment> lstAttachments = GetMsBuildAttachments(path, exception);
-
-		CombineAttachments(attachments, lstAttachments);
-	}
-
-
-
-	// Resolve the API key.
-    var token = EnvironmentVariable("SLACK_TOKEN");
-
-    if (string.IsNullOrEmpty(token))
-    {
-        throw new InvalidOperationException("Could not resolve Slack token.");
-    }
-
-
-
-	// Post Message
-	SlackChatMessageSettings settings = new SlackChatMessageSettings()
-	{
-		Token = token,
-		UserName = "Cake",
-		IconUrl = new System.Uri("https://raw.githubusercontent.com/cake-build/graphics/master/png/cake-small.png")
-	};
-
-	var title = "Build failed for " + appName + " v" + version;
-
-	SlackChatMessageResult result = Slack.Chat.PostMessage("#code", title, attachments, settings);
-
-	
-	
-	// Check Result
-    if (result.Ok)
-    {
-        // Posted
-        Information("Message was succcessfully sent to Slack.");
-    }
-    else
-    {
-        // Error
-        Error("Failed to send message to Slack: {0}", result.Error);
-    }
-
-	throw exception;
 });
+// .OnError(exception =>
+// {
+// 	List<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
+
+
+
+// 	// Get MsBuild Errors
+// 	var path = loggerResultsDir + "/build.txt";
+
+// 	if (FileExists(path))
+// 	{
+// 		IList<SlackChatMessageAttachment> lstAttachments = GetMsBuildAttachments(path, exception);
+
+// 		CombineAttachments(attachments, lstAttachments);
+// 	}
+
+
+
+// 	// Resolve the API key.
+//     var token = EnvironmentVariable("SLACK_TOKEN");
+
+//     if (string.IsNullOrEmpty(token))
+//     {
+//         throw new InvalidOperationException("Could not resolve Slack token.");
+//     }
+
+
+
+// 	// Post Message
+// 	SlackChatMessageSettings settings = new SlackChatMessageSettings()
+// 	{
+// 		Token = token,
+// 		UserName = "Cake",
+// 		IconUrl = new System.Uri("https://raw.githubusercontent.com/cake-build/graphics/master/png/cake-small.png")
+// 	};
+
+// 	var title = "Build failed for " + appName + " v" + version;
+
+// 	SlackChatMessageResult result = Slack.Chat.PostMessage("#code", title, attachments, settings);
+
+	
+	
+// 	// Check Result
+//     if (result.Ok)
+//     {
+//         // Posted
+//         Information("Message was succcessfully sent to Slack.");
+//     }
+//     else
+//     {
+//         // Error
+//         Error("Failed to send message to Slack: {0}", result.Error);
+//     }
+
+// 	throw exception;
+// });

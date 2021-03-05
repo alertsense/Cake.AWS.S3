@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 Task("Package")
-    .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Build")
     .IsDependentOn("Zip-Files")
     .IsDependentOn("Create-NuGet-Packages")
     .IsDependentOn("Publish-Local");
@@ -14,11 +14,11 @@ Task("Publish")
 
 
 
-Task("AppVeyor")
-    .IsDependentOn("Publish")
-    .IsDependentOn("Update-AppVeyor-Build-Number")
-    .IsDependentOn("Upload-AppVeyor-Artifacts")
-    .IsDependentOn("Slack");
+// Task("AppVeyor")
+//     .IsDependentOn("Publish")
+//     .IsDependentOn("Update-AppVeyor-Build-Number")
+//     .IsDependentOn("Upload-AppVeyor-Artifacts");
+    // .IsDependentOn("Slack");
 	
 
 

@@ -34,92 +34,92 @@ Task("Run-Unit-Tests")
     {
         ReportUnit(testResultsDir);
     }
-})
-.OnError(exception =>
-{
-	// Get Errors
-	IList<string> errors = new List<string>();
-
-	foreach(string test in testNames)
-    {
-		IList<XunitResult> testResults = GetXunitResults(testResultsDir + "/" + test.Replace(".Tests", "") + ".xml");
-		
-		foreach(XunitResult testResult in testResults)
-		{
-			errors.Add(testResult.Type + " => " + testResult.Method);
-			errors.Add(testResult.StackTrace);
-		}
-    }
-
-	if (errors.Count == 0)
-	{
-		errors.Add(exception.Message);
-	}
-
-
-
-    // Get Message
-	var title = "Unit-Tests failed for " + appName + " v" + version;
-    var text = "";
-
-	for (int index = 0; index < errors.Count; index++)
-	{
-		text += errors[index];
-
-		if (index < (errors.Count - 1))
-		{
-			text += "\n";
-		}
-	}
-
-
-
-	// Resolve the API key.
-    var token = EnvironmentVariable("SLACK_TOKEN");
-
-    if (string.IsNullOrEmpty(token))
-    {
-        throw new InvalidOperationException("Could not resolve Slack token.");
-    }
-
-
-
-	// Post Message
-	SlackChatMessageResult result;
-	
-	SlackChatMessageSettings settings = new SlackChatMessageSettings()
-	{
-		Token = token,
-		UserName = "Cake",
-		IconUrl = new System.Uri("https://raw.githubusercontent.com/cake-build/graphics/master/png/cake-small.png")
-	};
-
-	IList<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
-		
-	attachments.Add(new SlackChatMessageAttachment()
-	{
-		Color = "danger",
-		Text = text
-	});
-		
-	result = Slack.Chat.PostMessage("#code", title, attachments, settings);
-
-	
-	
-	// Check Result
-    if (result.Ok)
-    {
-        // Posted
-        Information("Message was succcessfully sent to Slack.");
-    }
-    else
-    {
-        // Error
-        Error("Failed to send message to Slack: {0}", result.Error);
-    }
-
-	throw exception;
 });
+// .OnError(exception =>
+// {
+// 	// Get Errors
+// 	IList<string> errors = new List<string>();
+
+// 	foreach(string test in testNames)
+//     {
+// 		IList<XunitResult> testResults = GetXunitResults(testResultsDir + "/" + test.Replace(".Tests", "") + ".xml");
+		
+// 		foreach(XunitResult testResult in testResults)
+// 		{
+// 			errors.Add(testResult.Type + " => " + testResult.Method);
+// 			errors.Add(testResult.StackTrace);
+// 		}
+//     }
+
+// 	if (errors.Count == 0)
+// 	{
+// 		errors.Add(exception.Message);
+// 	}
+
+
+
+//     // Get Message
+// 	var title = "Unit-Tests failed for " + appName + " v" + version;
+//     var text = "";
+
+// 	for (int index = 0; index < errors.Count; index++)
+// 	{
+// 		text += errors[index];
+
+// 		if (index < (errors.Count - 1))
+// 		{
+// 			text += "\n";
+// 		}
+// 	}
+
+
+
+// 	// Resolve the API key.
+//     var token = EnvironmentVariable("SLACK_TOKEN");
+
+//     if (string.IsNullOrEmpty(token))
+//     {
+//         throw new InvalidOperationException("Could not resolve Slack token.");
+//     }
+
+
+
+// 	// Post Message
+// 	SlackChatMessageResult result;
+	
+// 	SlackChatMessageSettings settings = new SlackChatMessageSettings()
+// 	{
+// 		Token = token,
+// 		UserName = "Cake",
+// 		IconUrl = new System.Uri("https://raw.githubusercontent.com/cake-build/graphics/master/png/cake-small.png")
+// 	};
+
+// 	IList<SlackChatMessageAttachment> attachments = new List<SlackChatMessageAttachment>();
+		
+// 	attachments.Add(new SlackChatMessageAttachment()
+// 	{
+// 		Color = "danger",
+// 		Text = text
+// 	});
+		
+// 	result = Slack.Chat.PostMessage("#code", title, attachments, settings);
+
+	
+	
+// 	// Check Result
+//     if (result.Ok)
+//     {
+//         // Posted
+//         Information("Message was succcessfully sent to Slack.");
+//     }
+//     else
+//     {
+//         // Error
+//         Error("Failed to send message to Slack: {0}", result.Error);
+//     }
+
+// 	throw exception;
+// });
 
 
 

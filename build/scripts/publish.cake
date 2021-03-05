@@ -61,7 +61,7 @@ Task("Publish-Local")
 
 Task("Publish-Nuget")
     .IsDependentOn("Create-NuGet-Packages")
-    .WithCriteria(() => isRunningOnAppVeyor || isRunningOnTFS || (target == "Skip-Restore") )
+    //.WithCriteria(() => isRunningOnAppVeyor || isRunningOnTFS || (target == "Skip-Restore") )
     .WithCriteria(() => !isPullRequest)
     .Does(() =>
 {

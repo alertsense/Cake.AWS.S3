@@ -20,7 +20,7 @@ var copyright = "Phillip Sharpe";
 
 // Get version.
 var buildNumber = AppVeyor.Environment.Build.Number;
-var version = releaseNotes.Version.ToString();
+var version = "0.6.6.1";//releaseNotes.Version.ToString();
 var semVersion = local ? version : (version + string.Concat("-build-", buildNumber));
 
 // Define directories.

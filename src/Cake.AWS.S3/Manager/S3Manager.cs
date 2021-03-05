@@ -183,7 +183,7 @@ namespace Cake.AWS.S3
                 request.ServerSideEncryptionCustomerMethod = ServerSideEncryptionCustomerMethod.AES256;
             }
 
-            request.ModifiedSinceDate = settings.ModifiedDate;
+            request.ModifiedSinceDateUtc = settings.ModifiedDate.ToUniversalTime();
 
             return request;
         }
@@ -203,7 +203,7 @@ namespace Cake.AWS.S3
                 request.ServerSideEncryptionCustomerMethod = ServerSideEncryptionCustomerMethod.AES256;
             }
 
-            request.ModifiedSinceDate = settings.ModifiedDate;
+            request.ModifiedSinceDateUtc = settings.ModifiedDate.ToUniversalTime();
 
             return request;
         }
